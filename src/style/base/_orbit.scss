@@ -1,0 +1,108 @@
+@use 'custom-props';
+@use 'mixins';
+
+body {
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+}
+
+.orbit {
+	$circle-size: 8rem;
+	$img-size: 12rem;
+	.center-image {
+		position: relative;
+		img {							
+			object-fit: cover;
+			position: absolute;			
+			width: $img-size;	
+			aspect-ratio: 1;		
+			z-index: 5;
+			transition: opacity	350ms;
+
+			&:last-child:hover {
+				opacity: 0;
+			}			
+		}
+	}
+
+	ul {
+		position: relative;
+		height: $img-size;
+		width: $img-size;
+		display: grid;
+		place-items: center;
+		transform-origin: center;
+		animation: orbit 60s linear infinite;		
+		
+		&:hover {
+			animation-play-state: paused;
+			--play-state-orbit: paused;
+		}			
+	}
+
+
+	li {		
+		--bg-color-1: pink;
+		--bg-color-2: lime;
+		position: absolute; 				
+		width: $circle-size;
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;				
+		text-align: center;
+		line-height: 1;
+		font-weight: 500;
+		color: white;
+		display: grid;
+		place-items: center;	
+
+		@for $i from 0 through 7 {
+			&:nth-child(#{$i + 1}) {
+				--throb-delay: #{500ms * $i};
+			}
+		}
+
+		&:hover {
+			--play-state-throb: paused;
+		}
+
+		> * {					
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: grid;
+			place-items: center;
+			border-radius: inherit;
+			background-color: var(--bg-color-1);
+
+			animation: 
+			orbit 60s linear infinite reverse var(--play-state-orbit, running),
+			throb 1s var(--throb-delay) ease-in-out infinite alternate var(--play-state-throb, running);
+		}
+
+
+		p {
+			background-color: var(--bg-color-2);
+			opacity: 0;
+			transition: opacity 350ms;
+		}
+
+		&:hover > p {
+			opacity: 1;
+		}
+		@include mixins.getPointOnCircle(15rem, 8);
+		@include mixins.setColors;
+	}	
+}
+
+@keyframes orbit {
+	100% {
+		rotate: 1turn;
+	}
+}
+
+@keyframes throb {
+	100% {
+		scale: 1.05;
+	}
+}

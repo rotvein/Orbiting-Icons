@@ -1,0 +1,24 @@
+@use 'sass:math';
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:list';
+@use '../abstracts/' as *;
+
+@mixin getPointOnCircle($radius, $n) {
+	@for $i from 1 through $n {
+		$theta: math.$pi * 2 / $n * $i;
+		&:nth-child(#{$i}) {
+			transform: translate(#{math.cos($theta) * $radius}, #{math.sin($theta) * $radius});
+		}
+	}	
+}
+
+@mixin setColors {
+	
+	@each $name, $color in $colors {
+		&:nth-child(#{list.index($colors, $name $color)}) {
+			--bg-color-1: var(--#{$name}-light);
+			--bg-color-2: var(--#{$name}-dark);
+		}
+	}
+}
