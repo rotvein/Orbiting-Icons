@@ -5,11 +5,13 @@ body {
 	display: grid;
 	place-items: center;
 	overflow: hidden;
+	font-size: 0.75rem;
 }
 
 .orbit {
-	$circle-size: 8rem;
-	$img-size: 12rem;
+	$circle-size: 4rem;
+	$img-size: 6rem;
+
 	.center-image {
 		position: relative;
 		img {							
@@ -56,6 +58,11 @@ body {
 		display: grid;
 		place-items: center;	
 
+		img {
+			max-width: 40%;
+			aspect-ratio: 1;
+		}
+
 		@for $i from 0 through 7 {
 			&:nth-child(#{$i + 1}) {
 				--throb-delay: #{500ms * $i};
@@ -90,7 +97,7 @@ body {
 		&:hover > p {
 			opacity: 1;
 		}
-		@include mixins.getPointOnCircle(15rem, 8);
+		@include mixins.getPointOnCircle(7.5rem, 8);
 		@include mixins.setColors;
 	}	
 }
